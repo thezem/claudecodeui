@@ -1,41 +1,33 @@
-import type { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
-import DarkModeToggle from '../../../DarkModeToggle';
-import LanguageSelector from '../../../LanguageSelector';
-import type { CodeEditorSettingsState, ProjectSortOrder } from '../../types/types';
+import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
+import DarkModeToggle from '../../../DarkModeToggle'
+import LanguageSelector from '../../../LanguageSelector'
+import type { CodeEditorSettingsState, ProjectSortOrder } from '../../types/types'
 
 type AppearanceSettingsTabProps = {
-  projectSortOrder: ProjectSortOrder;
-  onProjectSortOrderChange: (value: ProjectSortOrder) => void;
-  codeEditorSettings: CodeEditorSettingsState;
-  onCodeEditorThemeChange: (value: 'dark' | 'light') => void;
-  onCodeEditorWordWrapChange: (value: boolean) => void;
-  onCodeEditorShowMinimapChange: (value: boolean) => void;
-  onCodeEditorLineNumbersChange: (value: boolean) => void;
-  onCodeEditorFontSizeChange: (value: string) => void;
-};
+  projectSortOrder: ProjectSortOrder
+  onProjectSortOrderChange: (value: ProjectSortOrder) => void
+  codeEditorSettings: CodeEditorSettingsState
+  onCodeEditorThemeChange: (value: 'dark' | 'light') => void
+  onCodeEditorWordWrapChange: (value: boolean) => void
+  onCodeEditorShowMinimapChange: (value: boolean) => void
+  onCodeEditorLineNumbersChange: (value: boolean) => void
+  onCodeEditorFontSizeChange: (value: string) => void
+}
 
 type ToggleCardProps = {
-  label: string;
-  description: string;
-  checked: boolean;
-  onChange: (value: boolean) => void;
-  onIcon?: ReactNode;
-  offIcon?: ReactNode;
-  ariaLabel: string;
-};
+  label: string
+  description: string
+  checked: boolean
+  onChange: (value: boolean) => void
+  onIcon?: ReactNode
+  offIcon?: ReactNode
+  ariaLabel: string
+}
 
-function ToggleCard({
-  label,
-  description,
-  checked,
-  onChange,
-  onIcon,
-  offIcon,
-  ariaLabel,
-}: ToggleCardProps) {
+function ToggleCard({ label, description, checked, onChange, onIcon, offIcon, ariaLabel }: ToggleCardProps) {
   return (
-    <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+    <div className="bg-card dark:bg-card/50 border border-border dark:border-border rounded-lg p-4">
       <div className="flex items-center justify-between">
         <div>
           <div className="font-medium text-foreground">{label}</div>
@@ -43,22 +35,23 @@ function ToggleCard({
         </div>
         <button
           onClick={() => onChange(!checked)}
-          className="relative inline-flex h-8 w-14 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+          className="relative inline-flex h-8 w-14 items-center rounded-full bg-secondary dark:bg-secondary/40 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:focus:ring-offset-background"
           role="switch"
           aria-checked={checked}
           aria-label={ariaLabel}
         >
           <span className="sr-only">{ariaLabel}</span>
           <span
-            className={`${checked ? 'translate-x-7' : 'translate-x-1'
-              } h-6 w-6 transform rounded-full bg-white shadow-lg transition-transform duration-200 flex items-center justify-center`}
+            className={`${
+              checked ? 'translate-x-7' : 'translate-x-1'
+            } h-6 w-6 transform rounded-full bg-background shadow-lg transition-transform duration-200 flex items-center justify-center`}
           >
             {checked ? onIcon : offIcon}
           </span>
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 export default function AppearanceSettingsTab({
@@ -71,19 +64,17 @@ export default function AppearanceSettingsTab({
   onCodeEditorLineNumbersChange,
   onCodeEditorFontSizeChange,
 }: AppearanceSettingsTabProps) {
-  const { t } = useTranslation('settings');
-  const codeEditorThemeLabel = t('appearanceSettings.codeEditor.theme.label');
+  const { t } = useTranslation('settings')
+  const codeEditorThemeLabel = t('appearanceSettings.codeEditor.theme.label')
 
   return (
     <div className="space-y-6 md:space-y-8">
       <div className="space-y-4">
-        <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="bg-card dark:bg-card/50 border border-border dark:border-border rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
               <div className="font-medium text-foreground">{t('appearanceSettings.darkMode.label')}</div>
-              <div className="text-sm text-muted-foreground">
-                {t('appearanceSettings.darkMode.description')}
-              </div>
+              <div className="text-sm text-muted-foreground">{t('appearanceSettings.darkMode.description')}</div>
             </div>
             <DarkModeToggle ariaLabel={t('appearanceSettings.darkMode.label')} />
           </div>
@@ -95,20 +86,16 @@ export default function AppearanceSettingsTab({
       </div>
 
       <div className="space-y-4">
-        <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="bg-card dark:bg-card/50 border border-border dark:border-border rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-foreground">
-                {t('appearanceSettings.projectSorting.label')}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {t('appearanceSettings.projectSorting.description')}
-              </div>
+              <div className="font-medium text-foreground">{t('appearanceSettings.projectSorting.label')}</div>
+              <div className="text-sm text-muted-foreground">{t('appearanceSettings.projectSorting.description')}</div>
             </div>
             <select
               value={projectSortOrder}
-              onChange={(event) => onProjectSortOrderChange(event.target.value as ProjectSortOrder)}
-              className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 w-32"
+              onChange={event => onProjectSortOrderChange(event.target.value as ProjectSortOrder)}
+              className="text-sm bg-background dark:bg-card border border-input dark:border-border text-foreground dark:text-foreground rounded-lg focus:ring-1 focus:ring-ring focus:border-ring p-2 w-32"
             >
               <option value="name">{t('appearanceSettings.projectSorting.alphabetical')}</option>
               <option value="date">{t('appearanceSettings.projectSorting.recentActivity')}</option>
@@ -120,17 +107,15 @@ export default function AppearanceSettingsTab({
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">{t('appearanceSettings.codeEditor.title')}</h3>
 
-        <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="bg-card dark:bg-card/50 border border-border dark:border-border rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
               <div className="font-medium text-foreground">{codeEditorThemeLabel}</div>
-              <div className="text-sm text-muted-foreground">
-                {t('appearanceSettings.codeEditor.theme.description')}
-              </div>
+              <div className="text-sm text-muted-foreground">{t('appearanceSettings.codeEditor.theme.description')}</div>
             </div>
             <DarkModeToggle
               checked={codeEditorSettings.theme === 'dark'}
-              onToggle={(enabled) => onCodeEditorThemeChange(enabled ? 'dark' : 'light')}
+              onToggle={enabled => onCodeEditorThemeChange(enabled ? 'dark' : 'light')}
               ariaLabel={codeEditorThemeLabel}
             />
           </div>
@@ -160,20 +145,16 @@ export default function AppearanceSettingsTab({
           ariaLabel={t('appearanceSettings.codeEditor.lineNumbers.label')}
         />
 
-        <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="bg-card dark:bg-card/50 border border-border dark:border-border rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-foreground">
-                {t('appearanceSettings.codeEditor.fontSize.label')}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {t('appearanceSettings.codeEditor.fontSize.description')}
-              </div>
+              <div className="font-medium text-foreground">{t('appearanceSettings.codeEditor.fontSize.label')}</div>
+              <div className="text-sm text-muted-foreground">{t('appearanceSettings.codeEditor.fontSize.description')}</div>
             </div>
             <select
               value={codeEditorSettings.fontSize}
-              onChange={(event) => onCodeEditorFontSizeChange(event.target.value)}
-              className="text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 w-24"
+              onChange={event => onCodeEditorFontSizeChange(event.target.value)}
+              className="text-sm bg-background dark:bg-card border border-input dark:border-border text-foreground dark:text-foreground rounded-lg focus:ring-1 focus:ring-ring focus:border-ring p-2 w-24"
             >
               <option value="10">10px</option>
               <option value="11">11px</option>
@@ -189,5 +170,5 @@ export default function AppearanceSettingsTab({
         </div>
       </div>
     </div>
-  );
+  )
 }
