@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import QuickSettingsPanel from '../../QuickSettingsPanel';
-import { useTasksSettings } from '../../../contexts/TasksSettingsContext';
-import { useTranslation } from 'react-i18next';
-import ChatMessagesPane from './subcomponents/ChatMessagesPane';
-import ChatComposer from './subcomponents/ChatComposer';
-import type { ChatInterfaceProps } from '../types/types';
-import { useChatProviderState } from '../hooks/useChatProviderState';
-import { useChatSessionState } from '../hooks/useChatSessionState';
-import { useChatRealtimeHandlers } from '../hooks/useChatRealtimeHandlers';
-import { useChatComposerState } from '../hooks/useChatComposerState';
-import type { Provider } from '../types/types';
+import React, { useCallback, useEffect, useRef } from 'react'
+import QuickSettingsPanel from '../../QuickSettingsPanel'
+import { useTasksSettings } from '../../../contexts/TasksSettingsContext'
+import { useTranslation } from 'react-i18next'
+import ChatMessagesPane from './subcomponents/ChatMessagesPane'
+import ChatComposer from './subcomponents/ChatComposer'
+import type { ChatInterfaceProps } from '../types/types'
+import { useChatProviderState } from '../hooks/useChatProviderState'
+import { useChatSessionState } from '../hooks/useChatSessionState'
+import { useChatRealtimeHandlers } from '../hooks/useChatRealtimeHandlers'
+import { useChatComposerState } from '../hooks/useChatComposerState'
+import type { Provider } from '../types/types'
 
 type PendingViewSession = {
-  sessionId: string | null;
-  startedAt: number;
-};
+  sessionId: string | null
+  startedAt: number
+}
 
 function ChatInterface({
   selectedProject,
@@ -40,20 +40,20 @@ function ChatInterface({
   externalMessageUpdate,
   onShowAllTasks,
 }: ChatInterfaceProps) {
-  const { tasksEnabled, isTaskMasterInstalled } = useTasksSettings();
-  const { t } = useTranslation('chat');
+  const { tasksEnabled, isTaskMasterInstalled } = useTasksSettings()
+  const { t } = useTranslation('chat')
 
-  const streamBufferRef = useRef('');
-  const streamTimerRef = useRef<number | null>(null);
-  const pendingViewSessionRef = useRef<PendingViewSession | null>(null);
+  const streamBufferRef = useRef('')
+  const streamTimerRef = useRef<number | null>(null)
+  const pendingViewSessionRef = useRef<PendingViewSession | null>(null)
 
   const resetStreamingState = useCallback(() => {
     if (streamTimerRef.current) {
-      clearTimeout(streamTimerRef.current);
-      streamTimerRef.current = null;
+      clearTimeout(streamTimerRef.current)
+      streamTimerRef.current = null
     }
-    streamBufferRef.current = '';
-  }, []);
+    streamBufferRef.current = ''
+  }, [])
 
   const {
     provider,
@@ -70,7 +70,7 @@ function ChatInterface({
     cyclePermissionMode,
   } = useChatProviderState({
     selectedSession,
-  });
+  })
 
   const {
     chatMessages,
@@ -118,7 +118,7 @@ function ChatInterface({
     processingSessions,
     resetStreamingState,
     pendingViewSessionRef,
-  });
+  })
 
   const {
     input,
@@ -193,7 +193,7 @@ function ChatInterface({
     setClaudeStatus,
     setIsUserScrolledUp,
     setPendingPermissionRequests,
-  });
+  })
 
   useChatRealtimeHandlers({
     latestMessage,
@@ -217,41 +217,37 @@ function ChatInterface({
     onSessionNotProcessing,
     onReplaceTemporarySession,
     onNavigateToSession,
-  });
+  })
 
   useEffect(() => {
     if (!isLoading || !canAbortSession) {
-      return;
+      return
     }
 
     const handleGlobalEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape' || event.repeat || event.defaultPrevented) {
-        return;
+        return
       }
 
-      event.preventDefault();
-      handleAbortSession();
-    };
+      event.preventDefault()
+      handleAbortSession()
+    }
 
-    document.addEventListener('keydown', handleGlobalEscape, { capture: true });
+    document.addEventListener('keydown', handleGlobalEscape, { capture: true })
     return () => {
-      document.removeEventListener('keydown', handleGlobalEscape, { capture: true });
-    };
-  }, [canAbortSession, handleAbortSession, isLoading]);
+      document.removeEventListener('keydown', handleGlobalEscape, { capture: true })
+    }
+  }, [canAbortSession, handleAbortSession, isLoading])
 
   useEffect(() => {
     return () => {
-      resetStreamingState();
-    };
-  }, [resetStreamingState]);
+      resetStreamingState()
+    }
+  }, [resetStreamingState])
 
   if (!selectedProject) {
     const selectedProviderLabel =
-      provider === 'cursor'
-        ? t('messageTypes.cursor')
-        : provider === 'codex'
-          ? t('messageTypes.codex')
-          : t('messageTypes.claude');
+      provider === 'cursor' ? t('messageTypes.cursor') : provider === 'codex' ? t('messageTypes.codex') : t('messageTypes.claude')
 
     return (
       <div className="flex items-center justify-center h-full">
@@ -264,12 +260,12 @@ function ChatInterface({
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
     <>
-      <div className="h-full flex flex-col">
+      <div className="h-full w-[600px] flex flex-col">
         <ChatMessagesPane
           scrollContainerRef={scrollContainerRef}
           onWheel={handleScroll}
@@ -279,7 +275,7 @@ function ChatInterface({
           selectedSession={selectedSession}
           currentSessionId={currentSessionId}
           provider={provider}
-          setProvider={(nextProvider) => setProvider(nextProvider as Provider)}
+          setProvider={nextProvider => setProvider(nextProvider as Provider)}
           textareaRef={textareaRef}
           claudeModel={claudeModel}
           setClaudeModel={setClaudeModel}
@@ -337,11 +333,7 @@ function ChatInterface({
           onSubmit={handleSubmit}
           isDragActive={isDragActive}
           attachedImages={attachedImages}
-          onRemoveImage={(index) =>
-            setAttachedImages((previous) =>
-              previous.filter((_, currentIndex) => currentIndex !== index),
-            )
-          }
+          onRemoveImage={index => setAttachedImages(previous => previous.filter((_, currentIndex) => currentIndex !== index))}
           uploadingImages={uploadingImages}
           imageErrors={imageErrors}
           showFileDropdown={showFileDropdown}
@@ -371,11 +363,7 @@ function ChatInterface({
           isInputFocused={isInputFocused}
           placeholder={t('input.placeholder', {
             provider:
-              provider === 'cursor'
-                ? t('messageTypes.cursor')
-                : provider === 'codex'
-                ? t('messageTypes.codex')
-                : t('messageTypes.claude'),
+              provider === 'cursor' ? t('messageTypes.cursor') : provider === 'codex' ? t('messageTypes.codex') : t('messageTypes.claude'),
           })}
           isTextareaExpanded={isTextareaExpanded}
           sendByCtrlEnter={sendByCtrlEnter}
@@ -385,7 +373,7 @@ function ChatInterface({
 
       <QuickSettingsPanel />
     </>
-  );
+  )
 }
 
-export default React.memo(ChatInterface);
+export default React.memo(ChatInterface)
